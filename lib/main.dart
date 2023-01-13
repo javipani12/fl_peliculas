@@ -1,3 +1,5 @@
+import 'package:fl_peliculas/screens/details_screen.dart';
+import 'package:fl_peliculas/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(const MyApp());
@@ -10,6 +12,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Películas',
+      initialRoute: 'home',
+      routes: {
+        'home':(context) => HomeScreen(),
+        'details':(context) => DetailsScreen(),
+
+      },
     );
   }
 }
