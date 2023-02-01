@@ -5,14 +5,16 @@ class CastCarousel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
+      margin: EdgeInsets.only(bottom: 30),
       width: double.infinity,
+      height: 180,
       child: ListView.builder(
+        itemCount: 10,
         scrollDirection: Axis.horizontal,
         itemBuilder: (BuildContext context, int index) {
           return _CastCard();
-        },
-        itemCount: 10,
+        }
       ),
     );
   }
@@ -32,20 +34,20 @@ class _CastCard extends StatelessWidget {
           ClipRRect(
             borderRadius: BorderRadius.circular(10),
             child: FadeInImage(
-              placeholder: AssetImage('assets/loading.gif'), 
-              image: NetworkImage('https://via.placeholder.com/150x300'),
+              placeholder: AssetImage('assets/no-image.jpg'),
+              image: NetworkImage('https://images.mubicdn.net/images/cast_member/2184/cache-2992-1547409411/image-w856.jpg?size=800x'),
               height: 140,
-              width: 110,
+              width: 100,
               fit: BoxFit.cover,
             ),
           ),
           SizedBox(height: 5,),
           Text(
-            'Tom Cruise', 
+            'Tom Cruise',
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             textAlign: TextAlign.center,
-          )
+          ),
         ],
       ),
     );
