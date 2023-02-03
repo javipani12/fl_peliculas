@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:fl_peliculas/widgets/wigdets.dart';
+import 'package:fl_peliculas/models/models.dart';
 
 class DetailsScreen extends StatelessWidget {
   const DetailsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+
+    final Result movie = ModalRoute.of(context)!.settings.arguments as Result;
+
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -15,8 +19,7 @@ class DetailsScreen extends StatelessWidget {
               _InfoPelicula(),
               _Overview(),
               CastCarousel()
-            ]          
-            ),
+            ]),
           ),
         ],
       ),
