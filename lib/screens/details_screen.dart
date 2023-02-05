@@ -8,16 +8,26 @@ class DetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    final Result movie = ModalRoute.of(context)!.settings.arguments as Result;
+    final movie;
+
+    final String ruta = ModalRoute.of(context).toString().split("Instance of ")[1].split(")")[0];
+    
+    if( ruta == "'Result'" ){
+      final Result movieNowPlaying = ModalRoute.of(context)!.settings.arguments as Result;
+      movie = movieNowPlaying;
+    } else {
+      final ResultPopular moviePopular = ModalRoute.of(context)!.settings.arguments as ResultPopular;
+      movie = moviePopular;
+    }
 
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          _CustomAppBar(),
+          _CustomAppBar(movie: movie,),
           SliverList(
             delegate: SliverChildListDelegate([
-              _InfoPelicula(),
-              _Overview(),
+              _InfoPelicula(movie: movie),
+              _Overview(movie: movie,),
               CastCarousel()
             ]),
           ),
@@ -28,70 +38,10 @@ class DetailsScreen extends StatelessWidget {
 }
 
 
-              
-
-class _InfoPelicula extends StatelessWidget {
-  const _InfoPelicula({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-                children: [
-                  Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
-                          child: FadeInImage(
-                            placeholder: AssetImage('assets/loading.gif'),
-                            image: NetworkImage('https://es.web.img3.acsta.net/pictures/14/05/05/12/46/010208.jpg'),
-                            height: 180,
-                            width: 120,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 5, top: 20),
-                        child: Container(
-                          height: 200,
-                          width: 200,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Al Filo del mañana',
-                                style: Theme.of(context).textTheme.headline5,
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              SizedBox(height: 5,),
-                              Text(
-                                'Año: 2014',
-                                style: Theme.of(context).textTheme.subtitle1,
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              SizedBox(height: 5,),
-                              Row(children: [
-                                Icon(Icons.star, size: 25, color: Colors.amber,),
-                                SizedBox( width: 5),
-                                Text('5')
-                              ],),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ]
-                  ),
-                ],
-    );            
-  }
-}
-
 class _CustomAppBar extends StatelessWidget {
-  const _CustomAppBar({super.key});
+  const _CustomAppBar({super.key, required this.movie});
+
+  final movie;
 
   @override
   Widget build(BuildContext context) {
@@ -108,29 +58,95 @@ class _CustomAppBar extends StatelessWidget {
           alignment: Alignment.bottomCenter,
           color: Colors.black38,
           child: Text(
-            'Al Filo del mañana',
+            movie.title,
             style: TextStyle(fontSize: 16),
           )
         ),
         background: FadeInImage(
           placeholder: AssetImage('assets/loading.gif'),
-          image: NetworkImage('https://i.blogs.es/12cece/al-filo-del-manana/1366_2000.jpeg'),
+          image: NetworkImage(movie.fullPosterImage),
           fit: BoxFit.cover,
         ),
       ),
     );
   }
+}              
+
+
+class _InfoPelicula extends StatelessWidget {
+  const _InfoPelicula({super.key, required this.movie});
+
+  final movie;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: FadeInImage(
+                  placeholder: AssetImage('assets/loading.gif'),
+                  image: NetworkImage(movie.fullPosterImage),
+                  height: 180,
+                  width: 120,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 5, top: 20),
+              child: Container(
+                height: 200,
+                width: 200,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      movie.title,
+                      style: Theme.of(context).textTheme.headline5,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    SizedBox(height: 5,),
+                    Text(
+                      'Fecha: ${movie.castReleaseDate}',
+                      style: Theme.of(context).textTheme.subtitle1,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    SizedBox(height: 5,),
+                    Row(children: [
+                      Icon(Icons.star, size: 25, color: Colors.amber,),
+                      SizedBox( width: 5),
+                      Text('${movie.voteAverage}')
+                    ],),
+                  ],
+                ),
+              ),
+            ),
+          ]
+        ),
+      ],
+    );            
+  }
 }
 
+
 class _Overview extends StatelessWidget {
-  const _Overview({super.key});
+  const _Overview({super.key, required this.movie});
+
+  final movie;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: Text(
-        'Fugiat occaecat nulla reprehenderit quis consequat nisi nisi incididunt esse aliqua adipisicing non eiusmod. Ullamco et elit culpa do sunt ad labore voluptate Lorem. Id incididunt labore dolor irure do deserunt fugiat.',
+        movie.overview,
         textAlign: TextAlign.justify,
         style: Theme.of(context).textTheme.subtitle1,
         ),

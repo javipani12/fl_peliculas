@@ -11,7 +11,7 @@ class MoviesProvider extends ChangeNotifier{
   List <Result> onDisplayMovies = [];
   
   MoviesProvider(){
-    this.getOnDisplayMovies();
+    getOnDisplayMovies();
   }
 
   getOnDisplayMovies() async {
